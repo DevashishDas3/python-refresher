@@ -25,7 +25,7 @@ def will_it_float(mass, v):
 def calculate_pressure(depth):
     #depth = abs(depth)
     if depth < 0:
-            raise ValueError(f'Density input as {depth} is invalid')
+            raise ValueError(f'Depth input as {depth} is invalid')
     return (1000 * g * depth)
 
 def calculate_acceleration(F, m):
@@ -35,41 +35,39 @@ def  calculate_angular_acceleration(tau, I):
     return tau/I
 
 def calculate_torque(F_magnitude, F_direction, r):
-    l_small = (np.sin(F_direction) * r)
-    l_large = (np.cos(F_direction) * r)
-    return (F_magnitude) * (np.sin(F_direction)*(l_large)) * (np.cos(F_direction) *  l_small)
-    #calculate F using magnitude  and direction
-    '''
-    if F_direction > 180 or (F_direction < 0 and F_direction > -180):
-         return -1 * r * F_magnitude
-    if F_direction > 360:
-         raise ValueError("Angle must be between 0 and 360 degrees")
-    return r * F_magnitude
-    '''
+    F_direction = (F_direction * np.pi)/(180)
+    return (r * F_magnitude * np.sin(F_direction))
 
 def calculate_moment_of_inertia(m, r):
      return ((m) * pow(r, 2))
 
-def calculate_auv_acceleration(F_magnitude, F_angle):
-     pass
+def calculate_auv_acceleration(F_magnitude, F_angle, mass = 100):
+     F_angle = (F_angle * np.pi)/(180)
+     total_force = (F_magnitude) * (np.cos(F_angle)) + (F_magnitude) * (np.sin(F_angle))
+     return (total_force / mass)
      
-def calculate_auv_angular_acceleration(F_magnitude, F_angle):
-     return (calculate_torque(F_magnitude, F_angle, 0.5) / calculate_moment_of_inertia(100, 0.5))
+def calculate_auv_angular_acceleration(F_magnitude, F_angle, thruster_distance = 0.5, inertia = 1):
+     AUV_torque = calculate_torque(F_magnitude, F_angle, thruster_distance)
+     return (AUV_torque / inertia)
 
-def calculate_auv2_acceleration(T, alpha):
-     acceleration_resultant = np.array([])
-     for i in T:
-        np.append(acceleration_resultant, T/100)
+def calculate_auv2_acceleration(T, alpha, mass = 100):
+     alpha = (alpha * np.pi)/(180)
+     angular_mat = np.array([np.cos(alpha), np.cos(alpha), -np.cos(alpha), -np.cos(alpha)],
+                            [np.sin(alpha), -np.sin(alpha), -np.sin(alpha), np.sin(alpha)])
+     directional_forces = np.dot(angular_mat, T)
+     total_force = directional_forces[0,0] + directional_forces[1,0]
+     return total_force / mass
+     
 
-def calculate_auv2_angular_acceleration(T, alpha, L, l, intertia, theta):
-     inertia = 100
-     angular_acceleration_resultant = np.array([])
-     for i in range (len(T)):
-        b = np.arctan(l/L)
-        r = (L) / (np.cos(b))
-        torque = calculate_torque(T[i], theta, r)
-        angular_acceleration_resultant.append(torque/inertia)
-    return angular
+def calculate_auv2_angular_acceleration(T, alpha, L, l, inertia = 100):
+     r = np.sqrt(pow(L,2), pow(l,2))
+     summation_torque = 0
+     for i in range(len(T)):
+          summation_torque += calculate_torque(T[i], alpha, r)
+     return (summation_torque / inertia)
+
+
+
 
         
 
