@@ -32,26 +32,39 @@ def calculate_acceleration(F, m):
     return F/m
 
 def  calculate_angular_acceleration(tau, I):
+    if I < 0:
+         raise ValueError
     return tau/I
 
 def calculate_torque(F_magnitude, F_direction, r):
+    if F_magnitude <= 0 or r <= 0:
+        raise ValueError
     F_direction = (F_direction * np.pi)/(180)
     return (r * F_magnitude * np.sin(F_direction))
 
 def calculate_moment_of_inertia(m, r):
+     if m < 0 or r <= 0:
+          raise ValueError
      return ((m) * pow(r, 2))
 
 def calculate_auv_acceleration(F_magnitude, F_angle, mass = 100):
-     F_angle = (F_angle * np.pi)/(180)
+     if mass < 0 or F_magnitude < 0:
+          raise ValueError
+     F_angle = (F_angle * 180)/(np.pi)
      total_force = (F_magnitude) * (np.cos(F_angle)) + (F_magnitude) * (np.sin(F_angle))
      return (total_force / mass)
      
 def calculate_auv_angular_acceleration(F_magnitude, F_angle, thruster_distance = 0.5, inertia = 1):
+     if thruster_distance < 0 or F_magnitude < 0 or inertia < 0:
+          raise ValueError
+     F_angle = (F_angle * 180)/(np.pi)
      AUV_torque = calculate_torque(F_magnitude, F_angle, thruster_distance)
      return (AUV_torque / inertia)
 
 def calculate_auv2_acceleration(T, alpha, mass = 100):
-     alpha = (alpha * np.pi)/(180)
+     if mass < 0:
+          raise ValueError
+     alpha = (alpha * 180)/(np.pi)
      angular_mat = np.array([np.cos(alpha), np.cos(alpha), -np.cos(alpha), -np.cos(alpha)],
                             [np.sin(alpha), -np.sin(alpha), -np.sin(alpha), np.sin(alpha)])
      directional_forces = np.dot(angular_mat, T)
@@ -60,6 +73,8 @@ def calculate_auv2_acceleration(T, alpha, mass = 100):
      
 
 def calculate_auv2_angular_acceleration(T, alpha, L, l, inertia = 100):
+     if L <= 0 or l<=0 or inertia < 0:
+          raise ValueError
      r = np.sqrt(pow(L,2), pow(l,2))
      summation_torque = 0
      for i in range(len(T)):

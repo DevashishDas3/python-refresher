@@ -21,9 +21,19 @@ class PhysicsTest(unittest.TestCase):
 
     def test_acceleration(self):
         self.assertEqual(physics.calculate_acceleration(15,5), 3)
+        self.assertNotEqual(physics.calculate_acceleration(15,3), 3.000001)
+        self.assertEqual(physics.calculate_acceleration(6,3), 2)
     
     def test_angular_acceleration(self):
-        self.assertEqual(physics.calculate_angular_acceleration(3,1), 3)
+        self.assertEqual(physics.calculate_angular_acceleration(10,5), 2)
+        self.assertNotEqual(physics.calculate_angular_acceleration(10,5), 3)
+        self.assertRaises(physics.calculate_angular_acceleration(-10,2), ValueError)
+    
+    def test_calculate_torque(self):
+        self.assertEqual(physics.calculate_torque(-3, 30, -7), ValueError)
+        self.assertNoteEqual(physics.calculate_torque(-3, 30, -7), )
+
+
 
 
 if __name__ == "__main__":
