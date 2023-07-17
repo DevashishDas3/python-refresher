@@ -1,5 +1,6 @@
 import unittest
 import physics
+import numpy as np
 
 class PhysicsTest(unittest.TestCase):
     def test_buoyancy(self):
@@ -51,6 +52,9 @@ class PhysicsTest(unittest.TestCase):
 
     def test_calculate_auv2_angular_acceleration(self):
         pass
+
+    def test_stimulate_auv2_motion(self):
+        self.assertEqual(physics.stimulate_auv2_motion([30,40,90,100], np.pi/3, 4, 3))
 
 
 

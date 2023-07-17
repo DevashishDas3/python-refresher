@@ -147,14 +147,15 @@ def simulate_auv2_motion(T, alpha, L, l, mass = 100, inertia = 100, dt = 0.1, t_
 
           np.append(theta, theta0 + dtheta  * i)
 
-          plt.plot(t, x, label="x")
-          plt.plot(t, y, label="y")
-          plt.plot(t, a, label="Acceleration")
-          plt.xlabel("Time (s)")
-          plt.ylabel("Position (m), Velocity (m/s), Acceleration (m/s^2)")
-          plt.legend()
+def plot_auv2_motion(t,x,a,y):
+     plt.plot(t, x, label="x")
+     plt.plot(t, y, label="y")
+     plt.plot(t, a, label="Acceleration")
+     plt.xlabel("Time (s)")
+     plt.ylabel("Position (m), Velocity (m/s), Acceleration (m/s^2)")
+     plt.legend()
 
-          plt.show()
+     plt.show()
      #np.append(t, dt)
 
 
