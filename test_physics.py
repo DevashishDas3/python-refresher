@@ -31,7 +31,26 @@ class PhysicsTest(unittest.TestCase):
     
     def test_calculate_torque(self):
         self.assertEqual(physics.calculate_torque(-3, 30, -7), ValueError)
-        self.assertNoteEqual(physics.calculate_torque(-3, 30, -7), )
+        self.assertNoteEqual(physics.calculate_torque(-3, 90, -7), -21)
+        self.assertEqual(physics.calculate_torque(3,90,7), 21)
+    
+    def test_calculate_moment_of_inertia(self):
+        self.assertEqual(physics.calculate_moment_of_inertia(5,5), 125)
+        self.assertEqual(physics.calculate_moment_of_inertia(3,0), ValueError)
+        self.assertEqual(physics.calculate_moment_of_inertia(-3,3), ValueError)
+        self.assertNotEqual(physics.calculate_moment_of_inertia(-3,3), -27)
+    
+    def test_calculate_auv_acceleration(self):
+        pass
+
+    def test_calculate_auv_angular_acceleration(self):
+        pass
+
+    def test_calculate_auv2_acceleration(self):
+        pass
+
+    def test_calculate_auv2_angular_acceleration(self):
+        pass
 
 
 
